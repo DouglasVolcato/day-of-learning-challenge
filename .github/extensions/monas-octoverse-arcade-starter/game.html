@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a1020">
   <meta name="description" content="Guide Mona through the Octoverse. Collect commits, dodge bugs and unlock power-ups!">
-  <title>Mona's Octoverse Arcade — Commit Rush · v2</title>
+  <title>Mona's Octoverse Arcade — Commit Rush · v3</title>
   <link rel="icon" href="data:,">
   <style>
     :root { color-scheme:dark; --bg:#090e1b; --surface:#10182a; --surface-2:#162138; --stroke:#273651; --text:#f1f6ff; --muted:#a9b9d0; --green:#62e6a2; --purple:#bb99ff; --pink:#ff7fbd; --blue:#79caff; --red:#ff758c; font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
@@ -85,6 +85,99 @@
     @media(max-width:540px) { .app { padding:10px; } .top { margin-bottom:12px; } .brand { gap:8px; } .logo { width:39px; height:39px; border-radius:12px; } .logo svg { width:27px; height:27px; } .tag { display:none; } .scoreboard { padding:10px 4px; gap:0; } .stat .label { font-size:9px; } .stage { aspect-ratio:auto; height:clamp(360px,58dvh,500px); } .stage canvas { object-fit:fill; } .side { display:flex; } .side .card:last-child { grid-column:auto; } .bottom { padding:9px; } .control { min-width:48px; min-height:45px; } .control.dash-btn { min-width:92px; } .overlay-card { padding:13px; } .overlay-icon { width:42px; height:42px; margin-bottom:6px; } .overlay-card h2 { font-size:24px; } .overlay-card p { margin-bottom:8px; font-size:11px; } .guide { margin-bottom:8px; } .guide span { padding:2px 6px; } .primary { padding:12px; } .top-actions { gap:3px; } .small-btn { min-height:44px; padding:8px 10px; } .card { padding:14px; } }
     @media(max-width:360px) { .logo { display:none; } .overlay-card { padding:12px; } .overlay-card p { line-height:1.3; } .shortcut { line-height:1.25; } }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
+
+    /* V3 — Octoverse Neon City: gameplay first, illustration-rich and mobile safe. */
+    :root { --bg:#090d1b; --surface:#121c32; --surface-2:#1b2b45; --stroke:#30415e; --text:#f5f8ff; --muted:#c0cfe4; --green:#62f2a9; --purple:#baa0ff; --pink:#ffa2cb; --blue:#8dd8ff; --red:#ff778c; }
+    body { background: radial-gradient(ellipse 66% 50% at 50% 0,#31245a 0,transparent 75%), #090d1b; }
+    .app { width:min(1150px,100%); padding:clamp(9px,2vw,22px); }
+    .top { margin-bottom:12px; }
+    .logo { border:1px solid #c4a8ff77; background:linear-gradient(150deg,#372e79,#b774d8); }
+    .game-shell { border-color:#415278; box-shadow:0 0 0 1px #41527833,0 24px 70px #0006; }
+    .scoreboard { grid-template-columns:1.15fr .85fr .95fr .85fr; padding:9px 12px; background:linear-gradient(90deg,#142039,#1b2446 70%,#16223c); }
+    .stat { gap:0; } .stat .label { font-size:11px; letter-spacing:.08em; }
+    .stat strong { font-size:clamp(21px,3.2vw,30px); }
+    .stat:nth-child(2) strong { color:#ffd77e; }
+    .stat:nth-child(3) strong { color:#c4aaff; }
+    .layout { grid-template-columns:minmax(0,1fr) 234px; gap:14px; }
+    .stage { height:min(67dvh,600px); min-height:385px; aspect-ratio:auto; }
+    .stage::after { box-shadow:inset 0 0 55px #0a102a88; }
+    .overlay { background:#070b17b8; backdrop-filter:blur(11px); padding:13px; }
+    .overlay-card { width:min(450px,100%); padding:19px; background:linear-gradient(145deg,#222449,#151e39 67%,#12283b); border-color:#7c81c290; box-shadow:0 18px 65px #000a,0 0 45px #5e50b330; }
+    .overlay-card h2 { font-size:clamp(26px,4vw,37px); }
+    .overlay-card p { font-size:13px; line-height:1.5; }
+    .overlay-icon { display:none; }
+    .hero-characters { height:116px; display:flex; align-items:center; justify-content:center; gap:13px; margin:0 auto 10px; filter:drop-shadow(0 11px 18px #080a27); }
+    .hero-characters svg { height:100%; width:118px; overflow:visible; animation:heroBob 2.7s ease-in-out infinite alternate; }
+    .hero-characters svg:last-child { height:82px; width:88px; animation-delay:.6s; }
+    @keyframes heroBob { from { transform:translateY(1px) rotate(-2deg); } to { transform:translateY(-5px) rotate(2deg); } }
+    .primary { border-radius:12px; min-height:46px; font-size:15px; }
+    .primary:active { transform:scale(.98); }
+    .guide span { font-size:11px; }
+    .tip-pop { top:6px; max-width:calc(100% - 20px); background:#142e32f7; border-color:#77eab6; font-size:12px; white-space:normal; }
+    .tip-pop.visible { top:10px; }
+    .mission-bar { display:flex; align-items:center; gap:9px; background:#0b1529ee; border-bottom:1px solid #30435a; padding:6px 12px; color:#d9eaff; min-height:33px; }
+    .mission-title { font-size:11px; font-weight:780; letter-spacing:.04em; white-space:nowrap; }
+    .mission-track { height:5px; min-width:34px; flex:1; border-radius:50px; background:#2e3d57; overflow:hidden; }
+    #missionFill { width:0%; height:100%; border-radius:50px; background:linear-gradient(90deg,#5aebad,#ffe07e); transition:width .2s linear; }
+    #phaseTag { color:#b8bcff; font-size:11px; font-weight:760; max-width:38%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .bottom { flex-direction:column; align-items:stretch; gap:7px; padding:8px 12px; background:linear-gradient(145deg,#131f38,#101a30); }
+    .action-row { display:flex; align-items:center; justify-content:space-between; gap:9px; }
+    .controls { gap:8px; }
+    .control { background:#243554; border-color:#526684; min-width:50px; min-height:48px; font-size:17px; }
+    .dash-btn { border-color:#ad8fff; color:#f7e9ff; background:#4e367c; font-size:13px; min-width:103px; }
+    .ability-chips { display:flex; align-items:center; flex-wrap:wrap; justify-content:flex-end; gap:5px; }
+    .ability-chip { display:flex; align-items:center; gap:5px; border:1px solid #405a79; background:#1a2a43; padding:5px 8px; border-radius:99px; font-size:11px; color:#dce8ff; font-variant-numeric:tabular-nums; }
+    #abilityText { font-size:11px; min-height:15px; text-align:left; }
+    .copilot-dock { display:flex; align-items:center; gap:8px; margin-top:2px; padding:7px 9px; background:#1b2943; border:1px solid #5269a2; border-radius:10px; min-height:44px; }
+    .copilot-face { flex:none; display:grid; place-items:center; width:32px; height:32px; border-radius:10px; background:#b9a3ff; box-shadow:0 0 12px #a692ff4b; }
+    .copilot-face svg { width:25px; height:25px; }
+    #copilotMessage { min-height:0; margin:0; font-size:12px; line-height:1.4; color:#e9edff; }
+    .dock-name { display:block; color:#bdaaff; font-size:10px; font-weight:850; letter-spacing:.05em; text-transform:uppercase; }
+    .side { gap:0; }
+    .guide-panel { border:1px solid #354867; border-radius:17px; background:#111e33; overflow:hidden; }
+    .guide-panel summary { cursor:pointer; padding:13px 15px; color:#e0e9f9; font-weight:820; font-size:13px; }
+    .guide-inner { padding:3px 15px 15px; color:#c8d4eb; font-size:12px; line-height:1.6; }
+    .guide-inner b { color:#80f5b7; }
+    .guide-inner p { margin:5px 0 13px; }
+    .guide-inner strong { display:block; margin:10px 0 3px; color:#f6faff; }
+    .world-label { position:absolute; top:43px; left:10px; z-index:1; color:#c4d8f5; border:1px solid #5575a544; background:#0d152b77; backdrop-filter:blur(4px); padding:4px 7px; border-radius:8px; font-size:10px; letter-spacing:.09em; font-weight:800; pointer-events:none; }
+    .small-btn { padding:8px; min-height:44px; border-radius:8px; }
+    .small-btn:hover { background:#2c3653; }
+    .footer-text { margin-top:12px; }
+    @media(max-width:900px) { .layout { grid-template-columns:minmax(0,1fr); } .side { display:block; } .guide-panel:not([open]) { margin-top:9px; } }
+    @media(max-width:600px) {
+      .app { padding:8px; }
+      .top { margin-bottom:8px; gap:4px; }
+      .brand { gap:8px; } .logo { width:39px; height:39px; } .logo svg { width:27px; height:27px; }
+      .eyebrow { font-size:9px; letter-spacing:.105em; }
+      h1 { font-size:clamp(18px,5vw,23px); }
+      .scoreboard { padding:7px 3px; } .stat .label { font-size:10px; }
+      .stage { height:clamp(315px,53dvh,530px); min-height:0; }
+      .mission-bar { padding:5px 8px; gap:6px; } .mission-title,#phaseTag { font-size:10px; }
+      .overlay-card { padding:12px 13px; }
+      .hero-characters { height:75px; margin-bottom:5px; }
+      .hero-characters svg { width:85px; } .hero-characters svg:last-child { width:69px; height:67px; }
+      .overlay-card h2 { font-size:23px; margin-bottom:6px; }
+      .overlay-card p { font-size:12px; margin-bottom:7px; line-height:1.34; }
+      .guide span { font-size:10px; }
+      .bottom { padding:7px; }
+      .controls { gap:5px; }
+      .control { min-height:48px; min-width:46px; font-size:16px; }
+      .control.dash-btn { min-width:83px; }
+      .ability-chip { padding:5px; font-size:10px; }
+      #abilityText { font-size:10px; }
+      .copilot-dock { padding:5px 7px; }
+      #copilotMessage { font-size:11px; }
+      .footer-text { font-size:10px; }
+      .tag { display:none; }
+    }
+    @media(max-width:340px) { .logo { display:none; } .stat strong { font-size:20px; } .action-row { gap:3px; } .ability-chip { font-size:9px; padding:4px; } .control.dash-btn { min-width:75px; } }
+    @media(max-height:580px) and (max-width:900px) { .stage { height:max(270px,49dvh); } .hero-characters { height:56px; } .overlay-card h2 { font-size:21px; } .overlay-card p { font-size:11px; } }
+    @media(prefers-reduced-motion:reduce) { .hero-characters svg { animation:none !important; } #missionFill { transition:none !important; } }
+    .control.dash-btn { white-space:nowrap; }
+    @media(max-width:360px) { .control.dash-btn { min-width:76px; padding:0 6px; font-size:12px; } .copilot-dock { align-items:flex-start; } }
+    @media(min-width:950px) { .guide-panel { position:sticky; top:16px; } .guide-inner { font-size:13px; } }
+
   </style>
 </head>
 <body>
@@ -104,12 +197,18 @@
           <div class="stat"><span class="label">Level</span><strong id="level">01</strong></div>
           <div class="stat"><span class="label">Best</span><strong id="best">0</strong></div>
         </div>
+        <div class="mission-bar" aria-label="Mission progress"><span id="missionTitle" class="mission-title">✧ Collect 10 commits</span><div class="mission-track"><div id="missionFill"></div></div><span id="phaseTag">CONTRIBUTION CITY</span></div>
         <div class="stage" id="stage">
+          <span class="world-label" id="worldLabel" aria-hidden="true">01 // CONTRIBUTION CITY</span>
           <canvas id="game" width="760" height="480" tabindex="0" role="img" aria-label="Mona the Octocat collects falling green commit squares and avoids red bugs. Move using arrows or A and D. Use Space to dash, P to pause."></canvas>
           <div id="popup" class="tip-pop" role="status" aria-live="polite"></div>
           <div id="overlay" class="overlay" role="group" aria-labelledby="overlayTitle" aria-describedby="overlayDescription">
             <div class="overlay-card">
               <div class="overlay-icon" id="overlayIcon" aria-hidden="true">⌘</div>
+              <div class="hero-characters" id="heroCharacters" aria-hidden="true">
+                <svg viewBox="0 0 114 114"><defs><linearGradient id="mh" x2=".8" y2="1"><stop stop-color="#c2a8ff"/><stop offset="1" stop-color="#7054bd"/></linearGradient></defs><path d="M45 89Q18 108 29 78M62 89Q86 111 85 77M53 87Q51 110 38 105" fill="none" stroke="#6d54ab" stroke-width="9" stroke-linecap="round"/><ellipse cx="56" cy="78" rx="25" ry="24" fill="#59448e"/><path d="M28 43 24 12 46 27 68 25 91 12 86 45" fill="url(#mh)" stroke="#44366d" stroke-width="4" stroke-linejoin="round"/><ellipse cx="57" cy="49" rx="37" ry="34" fill="url(#mh)" stroke="#45336a" stroke-width="3"/><path d="M28 35 28 20 45 31M73 31 87 20 85 36" fill="#ff9ec2"/><ellipse cx="43" cy="49" rx="9" ry="11" fill="#fff"/><ellipse cx="72" cy="49" rx="9" ry="11" fill="#fff"/><circle cx="47" cy="51" r="4" fill="#26234b"/><circle cx="69" cy="51" r="4" fill="#26234b"/><ellipse cx="32" cy="62" rx="7" ry="4" fill="#ef92be"/><ellipse cx="82" cy="62" rx="7" ry="4" fill="#ef92be"/><path d="M51 65Q57 75 63 65" fill="none" stroke="#402e66" stroke-width="3" stroke-linecap="round"/><path d="M30 82 80 82" stroke="#ffca7b" stroke-width="8" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 100 100"><defs><linearGradient id="cg" x2="0" y2="1"><stop stop-color="#b5aeff"/><stop offset="1" stop-color="#7466d2"/></linearGradient></defs><path d="M50 12V3M23 25 17 16M77 25 83 16" stroke="#c1ffdd" stroke-width="5" stroke-linecap="round"/><rect x="9" y="17" width="82" height="72" rx="25" fill="url(#cg)" stroke="#6a64b0" stroke-width="4"/><rect x="17" y="36" width="66" height="32" rx="14" fill="#22244d"/><rect x="23" y="42" width="23" height="18" rx="8" fill="#76ffbb"/><rect x="54" y="42" width="23" height="18" rx="8" fill="#76ffbb"/><path d="M41 77Q50 85 59 77" fill="none" stroke="#403468" stroke-width="4" stroke-linecap="round"/><circle cx="75" cy="25" r="6" fill="#fff0a8"/></svg>
+              </div>
               <h2 id="overlayTitle">Ready to <span class="hero-highlight">ship?</span></h2>
               <p id="overlayDescription">Help Mona collect green commits, dodge red bugs and climb the contribution leaderboard.</p>
               <div class="guide" id="overlayGuide"><span>← → / A D to move</span><span>Space = dash</span><span>Drag / touch to steer</span></div>
@@ -119,25 +218,24 @@
           </div>
         </div>
         <div class="bottom">
-          <div class="controls" aria-label="Game controls">
-            <button id="leftBtn" class="control" type="button" aria-label="Move left">←</button>
-            <button id="rightBtn" class="control" type="button" aria-label="Move right">→</button>
-            <button id="dashBtn" class="control dash-btn" type="button">⚡ Dash</button>
+          <div class="action-row">
+            <div class="controls" aria-label="Game controls">
+              <button id="leftBtn" class="control" type="button" aria-label="Move left">◀</button>
+              <button id="rightBtn" class="control" type="button" aria-label="Move right">▶</button>
+              <button id="dashBtn" class="control dash-btn" type="button">⚡ Dash</button>
+            </div>
+            <div class="ability-chips" aria-label="Abilities"><span class="ability-chip" id="shieldChip">⬡ 0</span><span class="ability-chip" id="magnetChip">◎ —</span><span class="ability-chip" id="cooldownChip">ϟ Ready</span></div>
           </div>
-          <span id="abilityText">Shield: 0 · Magnet: inactive</span>
+          <div class="copilot-dock"><span class="copilot-face" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="5" y="12" width="38" height="31" rx="13" fill="#322755"/><rect x="9" y="18" width="30" height="18" rx="7" fill="#1a2742"/><rect x="12" y="22" width="10" height="10" rx="5" fill="#70ffc0"/><rect x="26" y="22" width="10" height="10" rx="5" fill="#70ffc0"/><path d="M15 12V7m18 5V7" stroke="#342451" stroke-width="4" stroke-linecap="round"/></svg></span><div><span class="dock-name">Copilot · Your co-op buddy</span><p id="copilotMessage" aria-live="polite">“Ready, Mona? Go green, dodge red!”</p></div></div>
+          <span id="abilityText" hidden>Shield: 0 · Magnet: inactive</span>
         </div>
       </section>
-      <aside class="side" aria-label="Game information">
-        <section class="card">
-          <h2>✦ Your AI sidekick</h2>
-          <div class="copilot"><div class="copilot-head"><div class="bot-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="8" y="15" width="32" height="26" rx="10" fill="#151d34" stroke="#c9bbff" stroke-width="2.3"/><path d="M15 16V10m18 6v-6" stroke="#d4c7ff" stroke-width="4" stroke-linecap="round"/><rect x="12" y="22" width="10" height="10" rx="4" fill="#80e6c1"/><rect x="26" y="22" width="10" height="10" rx="4" fill="#80e6c1"/><path d="M19 36h10" stroke="#c9bbff" stroke-linecap="round" stroke-width="2"/></svg></div><div><div class="bot-name">Copilot</div><div class="bot-status">● Pair programming your run</div></div></div><p id="copilotMessage" aria-live="polite">“Ready, Mona? Follow the green commits. I'll keep an eye on the bugs!”</p></div>
-        </section>
-        <section class="card"><h2>⚡ Repository power-ups</h2><div class="power-list">
-          <div class="power"><span class="power-icon shield">⬡</span><div><strong>Protected branch</strong><small>Shield blocks one bug hit</small></div></div>
-          <div class="power"><span class="power-icon magnet">◎</span><div><strong>Git magnet</strong><small>Pulls nearby commits to Mona</small></div></div>
-          <div class="power"><span class="power-icon dash">ϟ</span><div><strong>Merge dash</strong><small>Brief invulnerability; 4s cooldown</small></div></div>
-        </div></section>
-        <section class="card"><h2>⌘ How to play</h2><p class="rules">Collect <b style="color:#72ebaa">green commits</b>, avoid <b style="color:#ff8b9e">red bugs</b>, and survive increasingly fast waves. Every 10 points unlocks a Copilot tip. Your best score is saved on this device.</p></section>
+      <aside class="side" aria-label="Instructions and power-ups">
+        <details class="guide-panel" id="guidePanel">
+          <summary>✦ Field guide &amp; abilities</summary>
+          <div class="guide-inner"><strong>Mission</strong><p>Grab green commits and golden commits, survive increasingly clever red bugs and keep your streak alive. Every 10 commits unlocks a Copilot tip.</p>
+          <strong>Shield ⬡</strong><p>Absorbs a red bug collision.</p><strong>Magnet ◎</strong><p>Pulls nearby commits toward Mona for 8 seconds.</p><strong>Merge Dash ⚡</strong><p>Short burst of invulnerability; recharges in 4 seconds.</p><strong>Controls</strong><p>Move with A/D or arrows; Space to dash. On mobile, drag Mona or hold left/right. Press P to pause.</p><strong>Levels</strong><p>Explore <b>Contribution City</b>, <b>PR Highway</b> and <b>Merge Galaxy</b>. New bugs appear gradually; bosses show up every 25 commits.</p></div>
+        </details>
       </aside>
     </div>
     <p class="footer-text">Built for Mona's Octoverse Arcade · Powered by vanilla JavaScript · Runs entirely offline</p>
@@ -168,6 +266,11 @@
     let best = 0;
     try { best = Math.max(0, Number(localStorage.getItem(storageKey)) || 0); } catch (_) {}
     let sound = false, audioContext = null, lastFrame = performance.now(), popupUntil = 0;
+    let effectsEnabled = !prefersLessMotion;
+    const scenes = ["CONTRIBUTION CITY", "PULL REQUEST HIGHWAY", "MERGE GALAXY"];
+    const sceneIndex = () => Math.floor((game.level-1)/4)%scenes.length;
+    const safeX = () => Math.min(52,Math.max(28,W*.12));
+    let copilotMood = "happy";
     let mode = "ready";
     let pointerX = null;
     let player = {x:W/2, vx:0, facing:1, shield:0, magnet:0, invuln:0, dash:0, cooldown:0};
@@ -188,8 +291,8 @@
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const ratio = W / oldW;
-      player.x = clamp(player.x * ratio, 52, W - 52);
-      if (pointerX !== null) pointerX = clamp(pointerX * ratio, 52, W - 52);
+      player.x = clamp(player.x * ratio, safeX(), W - safeX());
+      if (pointerX !== null) pointerX = clamp(pointerX * ratio, safeX(), W - safeX());
       for (const item of game.items) item.x = clamp(item.x * ratio, 0, W);
       for (const particle of game.particles) particle.x *= ratio;
       for (const label of game.texts) label.x *= ratio;
@@ -197,8 +300,8 @@
       render(performance.now()/1000);
     }
 
-    function initialGame() { return {score:0,streak:0,level:1,elapsed:0,items:[],particles:[],texts:[],nextCommit:.3,nextBug:1.9,nextPower:9.8,lastTip:0,spawnedBoss:0}; }
-    function setCopilot(message) { el("copilotMessage").textContent = `“${message}”`; }
+    function initialGame() { return {score:0,streak:0,level:1,elapsed:0,items:[],particles:[],texts:[],nextCommit:.3,nextBug:1.9,nextPower:9.8,lastTip:0,spawnedBoss:0,missionsCompleted:0,missionStart:0,missionTarget:10,scene:0,warningUntil:0,warningType:"",maxStreak:0}; }
+    function setCopilot(message, mood="happy") { copilotMood=mood; el("copilotMessage").textContent = `“${message}”`; }
     function popup(message, duration=1900) { el("popup").textContent = message; popupUntil = performance.now()+duration; el("popup").classList.add("visible"); }
     function soundFx(type) {
       if (!sound) return;
@@ -224,6 +327,13 @@
       const cd = player.cooldown > 0 ? `${player.cooldown.toFixed(1)}s` : "ready";
       el("abilityText").textContent = `Shield: ${player.shield} · Magnet: ${magnet} · Dash: ${cd}`;
       el("dashBtn").disabled = mode !== "running" || player.cooldown > 0;
+      el("shieldChip").textContent = `⬡ ${player.shield}`;
+      el("magnetChip").textContent = player.magnet > 0 ? `◎ ${Math.ceil(player.magnet)}s` : "◎ —";
+      el("cooldownChip").textContent = player.cooldown > 0 ? `ϟ ${player.cooldown.toFixed(1)}s` : "ϟ Ready";
+      const progress = clamp((game.score-game.missionStart)/game.missionTarget,0,1);
+      el("missionFill").style.width = `${Math.round(progress*100)}%`;
+      el("missionTitle").textContent = `✧ Mission: ${Math.min(game.score-game.missionStart,game.missionTarget)}/${game.missionTarget} commits`;
+      el("phaseTag").textContent = scenes[sceneIndex()];
     }
     function showOverlay(title,description,action,note,icon="⌘") {
       el("overlayIcon").textContent = icon;
@@ -232,6 +342,7 @@
       el("overlayAction").textContent = action;
       el("overlayNote").textContent = note;
       el("overlayGuide").hidden = mode !== "ready";
+      el("heroCharacters").hidden = mode === "paused";
       el("overlay").hidden = false;
       el("overlayAction").focus({preventScroll:true});
     }
@@ -242,7 +353,8 @@
       mode = "running";
       el("overlay").hidden = true;
       popupUntil = 0; el("popup").classList.remove("visible");
-      game.items.push({kind:"commit",x:W/2,y:45,r:16,vy:120,wobble:0,angle:0});
+      game.items.push({kind:"commit",x:W/2,y:45,r:15,vy:120,wobble:0,angle:0,variant:"regular"});
+      el("worldLabel").textContent = "01 // CONTRIBUTION CITY";
       setCopilot("Let's build a green contribution graph! You handle Mona; I'll call the plays.");
       lastFrame = performance.now(); updateHud(); soundFx("level");
       canvas.focus({preventScroll:true});
@@ -252,7 +364,7 @@
       const pause = force === undefined ? mode === "running" : !!force;
       mode = pause ? "paused" : "running";
       if (pause) showOverlay("Push <span class='hero-highlight'>paused</span>","Take a break. Your commits will be waiting.","▶ Resume run","Press P to resume.","Ⅱ");
-      else { el("overlay").hidden = true; lastFrame = performance.now(); canvas.focus({preventScroll:true}); }
+      else { el("overlay").hidden = true; lastFrame = performance.now(); player.invuln=Math.max(player.invuln,.75); canvas.focus({preventScroll:true}); }
       el("pauseBtn").textContent = pause ? "▶ Resume" : "Ⅱ Pause";
       el("pauseBtn").setAttribute("aria-pressed", String(pause));
     }
@@ -266,40 +378,55 @@
       popup("💥 A bug broke the build!"); updateHud();
     }
     function addParticle(x,y,color,n=12) {
-      if (prefersLessMotion) return;
+      if (!effectsEnabled) return;
       for(let i=0;i<n;i++) { const a=Math.random()*Math.PI*2, sp=rand(35,180); game.particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:rand(.25,.67),max:.67,color,r:rand(2,4.4)}); }
       if (game.particles.length>160) game.particles.splice(0,game.particles.length-160);
     }
     function floatText(x,y,text,color="#d7ffef") { game.texts.push({x,y,text,life:.85,color}); }
     function spawn(kind) {
-      let x = kind === "commit" && Math.random()<.68 ? clamp(player.x+rand(-W*.22,W*.22),42,W-42) : rand(42,W-42);
+      const margin = Math.max(28,Math.min(48,W*.12));
+      let x = kind === "commit" && Math.random()<.68 ? clamp(player.x+rand(-W*.22,W*.22),margin,W-margin) : rand(margin,W-margin);
       // Do not spawn red bugs directly over green commits in the same wave.
-      if (kind === "bug" || kind === "boss") {
-        for (let attempt=0;attempt<12;attempt++) {
-          const near = game.items.some(item => item.kind === "commit" && item.y < 55 && Math.abs(item.x-x) < item.r+49);
-          if (!near) break;
-          x=rand(42,W-42);
+      let variant="regular";
+      if(kind==="bug") { const roll=Math.random();variant=game.level>=6&&roll>.77?"glitch":game.level>=3&&roll>.48?"fast":"basic"; }
+      if(kind==="commit" && game.level>=2 && Math.random()<.085) variant="golden";
+      // Keep an unobstructed lane for green pickups and avoid spawning a wall of bugs.
+      if(kind==="bug" || kind==="boss") {
+        const hazards=game.items.filter(it=>(it.kind==="bug"||it.kind==="boss") && it.y<120);
+        for(let attempt=0;attempt<24;attempt++) {
+          const overlaps=game.items.some(it=>(it.kind==="commit"||it.kind==="shield"||it.kind==="magnet")&&it.y<100&&Math.abs(it.x-x)<it.r+50);
+          const crowd=hazards.some(it=>Math.abs(it.x-x)<68);
+          const freeWidth=W/(Math.max(1,hazards.length+2));
+          if(!overlaps&&!crowd && freeWidth>=55)break;
+          x=rand(margin,W-margin);
         }
+        if(hazards.length>=Math.max(1,Math.floor(W/125)))return;
       }
-      const size = kind === "boss" ? 34 : kind === "bug" ? 20 : kind === "commit" ? 16 : 19;
-      game.items.push({kind,x,y:-42,r:size,wobble:rand(0,6.28),angle:rand(-.2,.2),vy:kind === "boss" ? -55:rand(-15,18)});
+      const size=kind==="boss"?32:kind==="bug"?(variant==="fast"?15:19):kind==="commit"?15:18;
+      const speed=variant==="fast"?115:variant==="glitch"?-20:kind==="boss"?-64:rand(-12,15);
+      game.items.push({kind,x,originX:x,y:-45,r:size,wobble:rand(0,6.28),angle:rand(-.2,.2),vy:speed,variant});
     }
     function collect(item,index) {
       const kind=item.kind;
       game.items.splice(index,1);
-      addParticle(item.x,item.y,kind==="shield"?"#8dd8ff":kind==="magnet"?"#c9a6ff":"#72f5ab",14);
+      addParticle(item.x,item.y,kind==="shield"?"#8dd8ff":kind==="magnet"?"#c9a6ff":item.variant==="golden"?"#ffdc73":"#72f5ab",item.variant==="golden"?27:14);
       if (kind==="commit") {
-        game.score++; game.streak++;
+        game.score++; game.streak++; game.maxStreak=Math.max(game.maxStreak,game.streak);
+        if (item.variant==="golden") { floatText(item.x,item.y,"✦ GOLDEN COMMIT","#ffe18b"); soundFx("power"); }
         floatText(item.x,item.y,"+1 COMMIT","#a1ffc4"); soundFx("collect");
-        if (game.streak>0 && game.streak%8===0) { popup(`✨ ${game.streak} COMMIT STREAK!`); soundFx("level"); }
+        if (game.streak>0 && game.streak%5===0) { popup(`✦ ${game.streak} COMMIT COMBO!`); addParticle(player.x,PY,"#ffd57e",18); soundFx("level"); }
+        if(game.score-game.missionStart>=game.missionTarget) {
+          game.missionsCompleted++;game.missionStart=game.score;game.missionTarget=game.missionsCompleted%2===0?15:10;
+          player.invuln=Math.max(player.invuln,.85);popup("✦ MISSION CLEAR · +SHIELD!",1800);player.shield=1;addParticle(player.x,PY,"#72edcf",26);
+        }
         if (game.score%10 === 0) {
           game.lastTip++;
           const tip=tips[(game.lastTip-1)%tips.length];
-          setCopilot(tip); popup(`🤖 COPILOT · ${tip}`,4100);
+          setCopilot(tip,"excited"); popup(`✦ COPILOT · ${tip}`,4100);
           soundFx("level");
         }
         if (game.score>=25 && game.score%25===0 && game.spawnedBoss!==game.score) {
-          game.spawnedBoss=game.score; spawn("boss"); popup("⚠ BOSS BUG INCOMING!",2200);
+          game.spawnedBoss=game.score; spawn("boss"); game.warningUntil=game.elapsed+2; game.warningType="boss"; setCopilot("Heads up! Boss bug detected. Keep moving!","alert"); popup("⚠ BOSS BUG INCOMING!",2200);
         }
       } else if (kind==="shield") {
         player.shield=1; setCopilot("Protection enabled! Your branch can withstand one red bug."); popup("⬡ SHIELD UNLOCKED"); soundFx("power");
@@ -322,7 +449,8 @@
     function update(dt) {
       game.elapsed+=dt;
       const lvl=Math.min(12,1+Math.floor(Math.max(game.score/9,game.elapsed/24)));
-      if (lvl>game.level) { game.level=lvl; popup(`↑ LEVEL ${lvl} · SPEED UP!`); soundFx("level"); }
+      if (lvl>game.level) { game.level=lvl; const scene=scenes[sceneIndex()];el("worldLabel").textContent=`${String(lvl).padStart(2,"0")} // ${scene}`;
+        setCopilot(`Welcome to ${scene.toLowerCase()}! New patterns incoming.`,"excited"); popup(`↑ LEVEL ${lvl} · ${scene}`,2200); soundFx("level"); }
       player.invuln=Math.max(0,player.invuln-dt);
       player.dash=Math.max(0,player.dash-dt);
       player.cooldown=Math.max(0,player.cooldown-dt);
@@ -336,7 +464,7 @@
         if (Math.abs(delta)>2) player.facing=Math.sign(delta);
       } else if (direction) { player.x+=(player.dash>0?Math.max(850,W*1.5):Math.max(310,W*.66))*direction*dt; player.facing=direction; }
       else if (player.dash>0) player.x+=player.facing*Math.max(740,W*1.2)*dt;
-      player.x=clamp(player.x,52,W-52);
+      player.x=clamp(player.x,safeX(),W-safeX());
       const intervalC=Math.max(.38,.82-.027*game.level);
       const intervalB=Math.max(.67,1.85-.09*game.level);
       while(game.elapsed>=game.nextCommit) { spawn("commit"); game.nextCommit+=intervalC*rand(.85,1.18); }
@@ -347,7 +475,9 @@
         const item=game.items[i];
         const multiplier=item.kind==="boss"?.7:item.kind==="bug"?1.08:1;
         item.y+=(worldSpeed*multiplier+item.vy)*dt;
-        item.wobble+=dt*3;
+        item.wobble+=dt*(item.variant==="fast"?7:3);
+        if(item.variant==="glitch") item.x=clamp(item.originX+Math.sin(game.elapsed*3.7+item.angle)*Math.min(65,W*.14),safeX(),W-safeX());
+        if(item.kind==="boss") item.x=clamp(item.originX+Math.sin(game.elapsed*1.8+item.angle)*Math.min(W*.18,110),safeX(),W-safeX());
         if (item.kind==="commit" && player.magnet>0) {
           const dx=player.x-item.x,dy=PY-item.y,dist=Math.hypot(dx,dy);
           if (dist<180 && dist>1) { const factor=Math.min(1,dt*5.1); item.x+=dx*factor; item.y+=dy*factor; }
@@ -374,34 +504,72 @@
     function polygon(points,fill) { ctx.beginPath(); points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.closePath(); ctx.fillStyle=fill; ctx.fill(); }
     function roundRect(x,y,w,h,r,fill,stroke=null) { ctx.beginPath(); ctx.roundRect(x,y,w,h,r); if(fill){ctx.fillStyle=fill;ctx.fill();} if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();} }
     function drawBackground(t) {
-      const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,"#131a37");g.addColorStop(.55,"#0b1830");g.addColorStop(1,"#102c35"); ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-      const glow=ctx.createRadialGradient(W*.5,H*.36,12,W*.5,H*.36,360); glow.addColorStop(0,"#4a3a9155");glow.addColorStop(1,"#28315a00");ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
-      for(const s of stars) { ctx.globalAlpha=.28+(prefersLessMotion?0:Math.sin(t*1.4+s.x)*.22);ctx.fillStyle="#bad4fe";ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill(); } ctx.globalAlpha=1;
-      // Distant neon skyscrapers form the skyline of the Octoverse.
-      for(let i=0;i<18;i++) { const x=i*48-12,h=50+(i*37)%70; ctx.fillStyle=i%2?"#101e37":"#121f39";ctx.fillRect(x,H-73-h,38,h);ctx.fillStyle="#3b6b73";for(let j=0;j<3;j++)for(let k=0;k<5;k++)if((i+j*7+k*11)%3===0)ctx.fillRect(x+7+j*10,H-67-h+k*13,3,5); }
-      // GitHub contribution grid on ground.
-      ctx.fillStyle="#102332";ctx.fillRect(0,H-77,W,77);
-      for(let y=H-66;y<=H;y+=23)for(let x=8;x<W;x+=27) { const shade=((Math.floor(x/27)*3+Math.floor(y/23))%7); roundRect(x,y,15,14,3,shade<2?"#26664b":shade<5?"#194739":"#183c36"); }
-      ctx.fillStyle="#5cffa8";ctx.fillRect(0,H-78,W,2);ctx.fillStyle="#51b6a933";ctx.fillRect(0,H-76,W,11);
-      ctx.strokeStyle="#ffffff09"; ctx.lineWidth=1;
-      for(let x=0;x<W;x+=76) { ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H-78);ctx.stroke(); }
+      const phase=sceneIndex(),slow=effectsEnabled?t*.36:0;
+      const sky=ctx.createLinearGradient(0,0,0,H);
+      if(phase===0){sky.addColorStop(0,"#1b1c4d");sky.addColorStop(.53,"#131a3b");sky.addColorStop(1,"#0a3035");}
+      else if(phase===1){sky.addColorStop(0,"#092c47");sky.addColorStop(.55,"#14334a");sky.addColorStop(1,"#132b38");}
+      else{sky.addColorStop(0,"#170f40");sky.addColorStop(.55,"#291949");sky.addColorStop(1,"#0d2440");}
+      ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+      const sun=ctx.createRadialGradient(W*.72,H*.22,2,W*.72,H*.22,Math.max(155,W*.53));sun.addColorStop(0,phase===0?"#b868f544":phase===1?"#3cd9ef43":"#bb72ff5a");sun.addColorStop(1,"#00000000");ctx.fillStyle=sun;ctx.fillRect(0,0,W,H);
+      for(const star of stars){ctx.globalAlpha=.3+(effectsEnabled?Math.sin(slow+star.x)*.16:0);ctx.fillStyle=phase===1?"#b4f9ff":"#d9d1ff";ctx.beginPath();ctx.arc(star.x,star.y,star.r,0,7);ctx.fill();}ctx.globalAlpha=1;
+      if(phase===0){
+        // Three parallax city layers, lit contribution windows, crescent moon and rooftop antennas.
+        ctx.beginPath();ctx.arc(W*.76,H*.20,24,0,7);ctx.fillStyle="#9d94ea";ctx.fill();ctx.beginPath();ctx.arc(W*.76+10,H*.20-10,22,0,7);ctx.fillStyle="#201a49";ctx.fill();
+        for(let layer=0;layer<3;layer++){
+          const tile=layer===0?80:layer===1?66:54, shift=effectsEnabled?(slow*(layer+1)*8)%tile:0;
+          for(let i=-2;i<Math.ceil(W/tile)+2;i++){
+            const x=i*tile-shift, bh=(layer===0?65:layer===1?85:105)+((i*37+layer*51+510)%60),by=H-82-bh+(layer===0?24:layer===1?11:0);
+            ctx.fillStyle=["#172544","#13223d","#11253d"][layer];roundRect(x,by,tile-8,bh,3,ctx.fillStyle);
+            for(let yy=by+12;yy<by+bh-5;yy+=16)for(let xx=x+10;xx<x+tile-13;xx+=13){if(((Math.floor(xx)+Math.floor(yy)*3+layer*13)%5)<2){ctx.fillStyle=layer===2?"#5dbaac77":"#7792cf55";ctx.fillRect(xx,yy,4,5);}}
+          }
+        }
+      }else if(phase===1){
+        // Endless pull-request highway. Lines run away from the player to a luminous vanishing point.
+        ctx.fillStyle="#1a2c45";ctx.fillRect(0,H*.34,W,H);
+        const glow=ctx.createRadialGradient(W*.5,H*.37,2,W*.5,H*.37,W*.65);glow.addColorStop(0,"#5de1e555");glow.addColorStop(1,"#5de1e500");ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+        ctx.strokeStyle="#46c5cc50";ctx.lineWidth=2;
+        for(let i=-5;i<=5;i++){ctx.beginPath();ctx.moveTo(W*.5+i*8,H*.38);ctx.lineTo(W*.5+i*(W*.14),H);ctx.stroke();}
+        for(let i=0;i<10;i++){let q=(i/10+(effectsEnabled?t*.3:0))%1;const y=H*.39+q*q*(H*.62);ctx.strokeStyle=`rgba(83,237,228,${q*.45})`;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+        for(let sign of [-1,1])for(let i=0;i<5;i++){const x=W*.5+sign*(W*.24+i*28);ctx.fillStyle="#183a4d";ctx.fillRect(x,0,3,H*.39);ctx.fillStyle="#7fffe26b";ctx.fillRect(x,17,2,22);}
+      }else{
+        // Merge galaxy with graph connectors and slowly orbiting nebulae.
+        for(let i=0;i<5;i++){const x=W*(.12+i*.19)+Math.sin(slow*.7+i)*15,y=H*(.15+((i*17)%5)*.115),r=42+i*8;const neb=ctx.createRadialGradient(x,y,0,x,y,r);neb.addColorStop(0,i%2?"#a75ee425":"#4aa6fa29");neb.addColorStop(1,"#0000");ctx.fillStyle=neb;ctx.fillRect(x-r,y-r,r*2,r*2);}
+        ctx.strokeStyle="#ae9aff48";ctx.lineWidth=2;ctx.beginPath();let old=null;
+        for(let i=0;i<10;i++){const x=W*(.08+i*.094),y=H*(.26+Math.sin(i*1.7)*.15);if(old){ctx.moveTo(old[0],old[1]);ctx.lineTo(x,y);}old=[x,y];}ctx.stroke();
+        for(let i=0;i<10;i++){const x=W*(.08+i*.094),y=H*(.26+Math.sin(i*1.7)*.15);ctx.fillStyle="#9ee7fe";ctx.beginPath();ctx.arc(x,y,3,0,7);ctx.fill();}
+      }
+      // Continuous, readable floor/grid, separate from the danger zone.
+      ctx.fillStyle=phase===0?"#102938":phase===1?"#112b3a":"#16273e";ctx.fillRect(0,H-78,W,78);
+      for(let y=H-64;y<H;y+=22)for(let x=9;x<W;x+=26){const shade=(Math.floor(x/26)*3+Math.floor(y/22))%7;roundRect(x,y,15,13,3,shade<2?"#2c7759":shade<5?"#205344":"#1c403b");}
+      ctx.fillStyle=phase===2?"#c78bff":"#72f6ba";ctx.fillRect(0,H-79,W,2);
+      ctx.fillStyle="#5ef4a72b";ctx.fillRect(0,H-77,W,11);
     }
     function drawCommit(item,t) {
       ctx.save();ctx.translate(item.x,item.y);ctx.rotate(Math.sin(item.wobble)*.12);
-      ctx.shadowColor="#60f5a0";ctx.shadowBlur=20;roundRect(-item.r,-item.r,item.r*2,item.r*2,5,"#40db83");ctx.shadowBlur=0;
-      roundRect(-item.r+3,-item.r+3,item.r*2-6,item.r*2-6,3,"#a2ffc4");
-      ctx.strokeStyle="#164d38";ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(-7,-1);ctx.lineTo(-1,5);ctx.lineTo(9,-7);ctx.stroke();ctx.restore();
+      const golden=item.variant==="golden",color=golden?"#ffcb65":"#45e69c";
+      ctx.shadowColor=color;ctx.shadowBlur=golden?28:15;
+      roundRect(-item.r,-item.r,item.r*2,item.r*2,6,golden?"#f9bc55":"#32c884");ctx.shadowBlur=0;
+      roundRect(-item.r+3,-item.r+3,item.r*2-6,item.r*2-6,4,golden?"#fff0a1":"#a0ffd2");
+      ctx.strokeStyle=golden?"#8d571f":"#18573d";ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();
+      if(golden){ctx.moveTo(0,-10);ctx.lineTo(3,-3);ctx.lineTo(10,-1);ctx.lineTo(4,4);ctx.lineTo(5,10);ctx.lineTo(0,7);ctx.lineTo(-7,10);ctx.lineTo(-5,3);ctx.lineTo(-10,-2);ctx.lineTo(-3,-4);ctx.closePath();ctx.stroke();}
+      else{ctx.moveTo(-7,-1);ctx.lineTo(-1,5);ctx.lineTo(9,-7);ctx.stroke();}ctx.restore();
     }
     function drawBug(item,t) {
-      ctx.save();ctx.translate(item.x,item.y);const boss=item.kind==="boss",r=item.r;
-      ctx.shadowColor="#ff456d";ctx.shadowBlur=boss?33:17;
-      for(const side of [-1,1])for(let i=0;i<3;i++){ctx.strokeStyle="#ff6482";ctx.lineWidth=boss?4:3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(side*r*.58,(i-1)*r*.55);ctx.lineTo(side*(r+10), (i-1)*r*.68+Math.sin(t*9+i)*3);ctx.stroke();}
-      ctx.beginPath();ctx.ellipse(0,1,r*.84,r,0,0,7);ctx.fillStyle=boss?"#bb315e":"#ec496b";ctx.fill();ctx.shadowBlur=0;
-      ctx.beginPath();ctx.ellipse(-r*.26,-r*.25,r*.24,r*.29,0,0,7);ctx.ellipse(r*.26,-r*.25,r*.24,r*.29,0,0,7);ctx.fillStyle="#fff0f5";ctx.fill();
-      ctx.fillStyle="#1d1f36";ctx.beginPath();ctx.arc(-r*.24,-r*.21,r*.11,0,7);ctx.arc(r*.26,-r*.21,r*.11,0,7);ctx.fill();
-      ctx.strokeStyle="#8c294c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,r*.15);ctx.lineTo(0,r*.67);ctx.stroke();
-      if(boss){ctx.fillStyle="#ffd37b";ctx.font="bold 11px system-ui";ctx.textAlign="center";ctx.fillText("BOSS",0,-r-11);}
-      ctx.restore();
+      ctx.save();ctx.translate(item.x,item.y);const boss=item.kind==="boss",fast=item.variant==="fast",glitch=item.variant==="glitch",r=item.r;
+      const wob=effectsEnabled?Math.sin(t*(fast?15:9)+item.angle)*2:0;
+      ctx.rotate(fast?-.13:glitch?.12*Math.sin(t*6):0);
+      if(fast){ctx.fillStyle="#ff867045";for(let j=0;j<3;j++)roundRect(-r*.7-j*11,-r*.5+j*6,18,4,3,"#ff866555");}
+      if(glitch){ctx.save();ctx.globalAlpha=.3;ctx.fillStyle="#7dfaff";ctx.beginPath();ctx.ellipse(6,0,r*.95,r*1.1,0,0,7);ctx.fill();ctx.restore();}
+      ctx.shadowColor=boss?"#ffa45b":"#ff4d86";ctx.shadowBlur=boss?28:15;
+      for(const side of [-1,1])for(let i=0;i<3;i++){ctx.strokeStyle=boss?"#ffbd6a":"#ff7896";ctx.lineWidth=boss?5:2.8;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(side*r*.59,(i-1)*r*.55);ctx.lineTo(side*(r+9),(i-1)*r*.73+wob);ctx.stroke();}
+      ctx.beginPath();ctx.ellipse(0,0,r*.91,r*(boss?1.09:1),0,0,7);ctx.fillStyle=boss?"#ad3a6c":fast?"#fb765b":glitch?"#e24d9a":"#e94d73";ctx.fill();ctx.shadowBlur=0;
+      if(boss){ctx.beginPath();ctx.moveTo(-r*.6,-r*.76);ctx.lineTo(-r*.2,-r*1.35);ctx.lineTo(0,-r*.86);ctx.lineTo(r*.25,-r*1.35);ctx.lineTo(r*.67,-r*.75);ctx.closePath();ctx.fillStyle="#ffbb74";ctx.fill();ctx.fillStyle="#fff3bb";ctx.fillRect(-r*.11,-r*1.13,r*.22,6);}
+      ctx.fillStyle="#fff0f4";ctx.beginPath();ctx.ellipse(-r*.32,-r*.19,r*.24,r*.27,0,0,7);ctx.ellipse(r*.32,-r*.19,r*.24,r*.27,0,0,7);ctx.fill();
+      ctx.fillStyle="#301d38";ctx.beginPath();ctx.arc(-r*.28,-r*.16,r*.105,0,7);ctx.arc(r*.3,-r*.16,r*.105,0,7);ctx.fill();
+      ctx.strokeStyle="#5d2146";ctx.lineWidth=2.5;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(-r*.2,r*.38);ctx.lineTo(0,r*.25);ctx.lineTo(r*.2,r*.4);ctx.stroke();
+      ctx.strokeStyle="#ffabc3";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-r*.54,-r*.57);ctx.lineTo(-r*.18,-r*.42);ctx.moveTo(r*.54,-r*.57);ctx.lineTo(r*.18,-r*.42);ctx.stroke();
+      if(glitch){ctx.fillStyle="#c6a3ff";ctx.fillRect(-r*.68,r*.62,r*.3,3);ctx.fillRect(r*.48,-r*.8,r*.33,3);}
+      if(boss){ctx.fillStyle="#ffe7ae";ctx.font="800 11px system-ui";ctx.textAlign="center";ctx.fillText("BOSS BUG",0,-r-13);}ctx.restore();
     }
     function drawPower(item,t) {
       ctx.save();ctx.translate(item.x,item.y);const shield=item.kind==="shield", color=shield?"#8bdcff":"#c5a4ff";
@@ -413,36 +581,52 @@
       ctx.restore();
     }
     function drawMona(t) {
-      ctx.save();ctx.translate(player.x,PY);const bob=mode==="running"&&!prefersLessMotion?Math.sin(t*9)*1.6:0;
-      ctx.translate(0,bob);
-      const flicker=player.invuln>0 && Math.floor(t*15)%2===0;
-      if(flicker)ctx.globalAlpha=.55;
-      if(player.magnet>0){ctx.beginPath();ctx.arc(0,0,115+Math.sin(t*7)*8,0,7);ctx.strokeStyle="#ba92ff2b";ctx.lineWidth=7;ctx.stroke();}
-      if(player.shield>0){ctx.beginPath();ctx.arc(0,0,39,0,7);ctx.fillStyle="#7fcfff13";ctx.fill();ctx.strokeStyle="#9ddffe";ctx.lineWidth=3;ctx.setLineDash([7,5]);ctx.lineDashOffset=-t*20;ctx.stroke();ctx.setLineDash([]);}
-      if(player.dash>0){ctx.fillStyle="#caadff36";ctx.beginPath();ctx.ellipse(-player.facing*36,0,53,18,0,0,7);ctx.fill();}
-      // Curled Octocat tentacles (stylized, drawn directly rather than loading images).
-      ctx.lineWidth=8;ctx.lineCap="round";ctx.strokeStyle="#29334f";
-      for(let i=0;i<4;i++)for(const sign of [-1,1]){
-        const origin=sign*(7+i*4),edge=sign*(16+i*5);
-        ctx.beginPath();ctx.moveTo(origin,13);ctx.bezierCurveTo(edge,22+i*2,edge+sign*8,14+i*4,edge+sign*(10+i*2),21-i*2);ctx.stroke();
+      ctx.save();ctx.translate(player.x,PY);
+      const bob=mode==="running"&&effectsEnabled?Math.sin(t*8)*2.1:0;
+      ctx.translate(0,bob);const moving=keys.left||keys.right||pointerX!==null;
+      if(moving && effectsEnabled)ctx.rotate(Math.sin(t*12)*.04*player.facing);
+      if(player.invuln>0 && Math.floor(t*15)%2===0)ctx.globalAlpha=.60;
+      // Cast shadow anchors Mona to the platform; effects follow the active abilities.
+      ctx.beginPath();ctx.ellipse(0,39,31,8,0,0,7);ctx.fillStyle="#0309168f";ctx.fill();
+      if(player.magnet>0){ctx.save();ctx.strokeStyle="#c3a0ff35";ctx.lineWidth=9;ctx.beginPath();ctx.arc(0,-12,115+(effectsEnabled?Math.sin(t*4)*7:0),0,7);ctx.stroke();ctx.restore();}
+      if(player.shield>0){ctx.beginPath();ctx.arc(0,-11,47,0,7);ctx.fillStyle="#79ccff19";ctx.fill();ctx.strokeStyle="#9cdfff";ctx.lineWidth=3;ctx.setLineDash([7,6]);ctx.lineDashOffset=effectsEnabled?-t*20:0;ctx.stroke();ctx.setLineDash([]);}
+      if(player.dash>0){for(let i=0;i<4;i++){ctx.fillStyle=`rgba(193,151,255,${.21-i*.04})`;ctx.beginPath();ctx.ellipse(-player.facing*(i*17+22),0,36-i*5,15,0,0,7);ctx.fill();}}
+      // Animated eight-arms silhouette with visible depth.
+      for(const side of [-1,1])for(let i=0;i<4;i++){
+        const wave=effectsEnabled?Math.sin(t*(moving?12:5)+i*1.4)*4:0;
+        ctx.strokeStyle=i%2?"#6a4da3":"#7861ba";ctx.lineWidth=8-i*.65;ctx.lineCap="round";
+        ctx.beginPath();ctx.moveTo(side*(11+i*2),13);ctx.bezierCurveTo(side*(19+i*8),24+wave,side*(20+i*9),13+i*4+wave,side*(30+i*7),21+wave);ctx.stroke();
       }
-      // Body + tail
-      ctx.beginPath();ctx.moveTo(20,8);ctx.quadraticCurveTo(38,7,35,-8);ctx.strokeStyle="#343b60";ctx.lineWidth=6;ctx.stroke();
-      ctx.fillStyle="#2e3656";ctx.beginPath();ctx.ellipse(0,4,19,27,0,0,7);ctx.fill();
-      // Octocat ears and head
-      polygon([[-24,-15],[-24,-51],[-6,-42],[7,-42],[23,-51],[25,-16]],"#2e3657");
-      ctx.beginPath();ctx.ellipse(0,-23,28,25,0,0,7);ctx.fillStyle="#343c5d";ctx.fill();
-      polygon([[-18,-32],[-18,-44],[-7,-38]],"#e68fb0");polygon([[9,-38],[18,-44],[18,-32]],"#e68fb0");
-      // Wide expressive eyes
-      ctx.fillStyle="#f6f8ff";ctx.beginPath();ctx.ellipse(-10,-25,6.5,8,0,0,7);ctx.ellipse(10,-25,6.5,8,0,0,7);ctx.fill();
-      ctx.fillStyle="#181b35";ctx.beginPath();ctx.arc(-9+player.facing,-24,2.5,0,7);ctx.arc(11+player.facing,-24,2.5,0,7);ctx.fill();
-      ctx.fillStyle="#f0a1c2";ctx.beginPath();ctx.arc(-19,-15,4,0,7);ctx.arc(19,-15,4,0,7);ctx.fill();
-      ctx.fillStyle="#ffb7c9";ctx.beginPath();ctx.arc(0,-14,3.5,0,7);ctx.fill();
-      ctx.strokeStyle="#ebb2c8";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,-11);ctx.quadraticCurveTo(-5,-7,-9,-11);ctx.moveTo(0,-11);ctx.quadraticCurveTo(5,-7,9,-11);ctx.stroke();
-      // Scarf marks the hero against the dark background.
-      roundRect(-18,-3,36,8,4,"#9b86ec");
-      ctx.globalAlpha=1;ctx.restore();
-      ctx.fillStyle="#d3fbec";ctx.font="bold 11px system-ui";ctx.textAlign="center";ctx.fillText("MONA",player.x,PY-64);
+      // Tail, rounded body and little golden scarf.
+      ctx.strokeStyle="#785bb9";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(18,10);ctx.bezierCurveTo(44,9,43,-4,31,-13);ctx.stroke();
+      ctx.fillStyle="#6e54aa";ctx.beginPath();ctx.ellipse(0,7,21,28,0,0,7);ctx.fill();
+      ctx.fillStyle="#8469cb";ctx.beginPath();ctx.ellipse(-7,2,10,20,-.2,0,7);ctx.fill();
+      // Ears and wide head (facing changes pupils rather than hitbox).
+      polygon([[-27,-22],[-27,-58],[-8,-44],[9,-44],[27,-58],[27,-22]],"#8364c5");
+      polygon([[-20,-39],[-21,-50],[-8,-42]],"#ffaacb");polygon([[8,-42],[21,-50],[20,-39]],"#ffaacb");
+      ctx.beginPath();ctx.ellipse(0,-26,30,27,0,0,7);ctx.fillStyle="#8c70d0";ctx.fill();
+      ctx.beginPath();ctx.ellipse(-9,-36,15,10,-.2,0,7);ctx.fillStyle="#ffffff20";ctx.fill();
+      // Blink and clear expression states: happy/alert/celebrate.
+      const blink=effectsEnabled&&(Math.sin(t*.9+1.4)>.985);
+      if(!blink){ctx.fillStyle="#f7f9ff";ctx.beginPath();ctx.ellipse(-11,-29,7.4,9,0,0,7);ctx.ellipse(11,-29,7.4,9,0,0,7);ctx.fill();ctx.fillStyle="#232447";ctx.beginPath();ctx.arc(-10+player.facing*1.6,-28,3,0,7);ctx.arc(12+player.facing*1.6,-28,3,0,7);ctx.fill();ctx.fillStyle="#fff";ctx.fillRect(-11,-31,2,2);ctx.fillRect(11,-31,2,2);}
+      else{ctx.strokeStyle="#32264b";ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(-18,-28);ctx.lineTo(-5,-28);ctx.moveTo(5,-28);ctx.lineTo(18,-28);ctx.stroke();}
+      ctx.fillStyle="#f6a3c7";ctx.beginPath();ctx.ellipse(-21,-17,5,3.5,0,0,7);ctx.ellipse(21,-17,5,3.5,0,0,7);ctx.fill();
+      ctx.fillStyle="#ffd4e2";ctx.beginPath();ctx.arc(0,-17,3.7,0,7);ctx.fill();
+      ctx.strokeStyle="#4a315f";ctx.lineWidth=1.7;ctx.beginPath();ctx.moveTo(0,-14);ctx.quadraticCurveTo(-5,-9,-9,-14);ctx.moveTo(0,-14);ctx.quadraticCurveTo(5,-9,9,-14);ctx.stroke();
+      roundRect(-21,-5,43,9,4,"#ffce7b");ctx.fillStyle="#ef7f9a";ctx.beginPath();ctx.moveTo(16,-1);ctx.lineTo(29,9);ctx.lineTo(21,-7);ctx.fill();
+      ctx.restore();
+    }
+    function drawCopilotCompanion(t) {
+      // Helper orbits close to Mona, without modifying hitboxes or obscuring items.
+      const dir=player.x>W*.78?-1:1;
+      const x=clamp(player.x+dir*61,35,W-32),y=PY-75+(effectsEnabled?Math.sin(t*3.3)*5:0);
+      ctx.save();ctx.translate(x,y);ctx.shadowColor=copilotMood==="alert"?"#ff9b7d":"#afaaff";ctx.shadowBlur=14;
+      roundRect(-24,-23,48,42,15,"#aaa3ef","#eadfff");ctx.shadowBlur=0;
+      ctx.fillStyle="#293155";roundRect(-19,-12,38,24,9,"#202845");
+      ctx.fillStyle=copilotMood==="alert"?"#ffe28d":"#8fffd0";roundRect(-15,-8,13,13,5,ctx.fillStyle);roundRect(3,-8,13,13,5,ctx.fillStyle);
+      ctx.strokeStyle="#dad1ff";ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(-13,-22);ctx.lineTo(-16,-30);ctx.moveTo(13,-22);ctx.lineTo(16,-30);ctx.stroke();
+      ctx.fillStyle="#fff7ad";ctx.beginPath();ctx.arc(16,-31,4,0,7);ctx.fill();
+      ctx.restore();
     }
     function render(t) {
       drawBackground(t);
@@ -453,8 +637,10 @@
       }
       ctx.save();for(const p of game.particles){ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();}ctx.restore();
       ctx.save();for(const f of game.texts){ctx.globalAlpha=clamp(f.life/.85,0,1);ctx.textAlign="center";ctx.font="bold 13px system-ui";ctx.fillStyle=f.color;ctx.fillText(f.text,f.x,f.y);}ctx.restore();
-      drawMona(t);
-      if(mode==="running" && game.level>=3) {ctx.font="700 11px system-ui";ctx.textAlign="left";ctx.fillStyle="#8bcda9";ctx.fillText(`⚡ WAVE ${game.level}`,18,28);}
+      drawMona(t);drawCopilotCompanion(t);
+      if(mode==="running" && game.warningUntil>game.elapsed) {ctx.save();ctx.textAlign="center";ctx.font="900 13px system-ui";ctx.fillStyle="#ffda93";ctx.fillText("⚠ INCOMING BOSS BUG",W/2,68);ctx.restore();}
+      if(game.streak>=2) {ctx.font="800 13px system-ui";ctx.textAlign="right";ctx.fillStyle="#ffdf8c";ctx.fillText(`✦ x${game.streak} COMBO`,W-14,26);}
+      if(mode==="running" && game.level>=3) {ctx.font="700 10px system-ui";ctx.textAlign="left";ctx.fillStyle="#91e7d8";ctx.fillText(`WAVE ${game.level}`,14,20);}
     }
     function frame(now) {
       const dt=Math.min(.04,Math.max(0,(now-lastFrame)/1000));lastFrame=now;
@@ -466,8 +652,8 @@
     function handleKey(e,down) {
       // Leave native button activation intact; otherwise Space could start
       // two runs (keydown handler + browser-generated button click).
-      if (e.target instanceof HTMLElement && e.target.closest("button")) return;
       const k=e.key.toLowerCase();
+      if (e.target instanceof HTMLElement && e.target.closest("button") && k!=="p" && k!=="escape") return;
       if(["arrowleft","arrowright"," ","a","d","p","escape"].includes(k) && (mode==="running"||mode==="paused"))e.preventDefault();
       if(k==="arrowleft"||k==="a") keys.left=down;
       if(k==="arrowright"||k==="d") keys.right=down;
@@ -486,7 +672,7 @@
       for(const event of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(event,up);
     }
     const stage=el("stage");
-    const steer=e=>{const r=canvas.getBoundingClientRect();pointerX=clamp((e.clientX-r.left)*W/r.width,52,W-52);};
+    const steer=e=>{const r=canvas.getBoundingClientRect();pointerX=clamp((e.clientX-r.left)*W/r.width,safeX(),W-safeX());};
     stage.addEventListener("pointerdown",e=>{if(mode!=="running"||e.target!==canvas)return;steer(e);canvas.setPointerCapture(e.pointerId);});
     stage.addEventListener("pointermove",e=>{if(mode!=="running"||!canvas.hasPointerCapture(e.pointerId))return;steer(e);});
     for(const event of ["pointerup","pointercancel","lostpointercapture"])canvas.addEventListener(event,()=>{pointerX=null;});
